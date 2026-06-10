@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — SABAWYAN HOTEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-dark:#a07830;--navy:#0d1b2a;--navy-mid:#1a2e45;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0d1b2a 0%,#1a2e45 50%,#243b55 100%);min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;background:url('../../photo/hotelnamebg.jpg') center/cover no-repeat;opacity:0.05;z-index:0;}
+
+    /* Topbar */
+    .topbar{position:relative;z-index:10;background:rgba(13,27,42,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+    .brand{display:flex;align-items:center;gap:12px;}
+    .brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .brand-icon i{font-size:17px;color:var(--navy);}
+    .brand h1{font-family:'Playfair Display',serif;font-size:18px;color:#fff;}
+    .brand span{font-size:11px;color:var(--gold-light);}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;color:var(--gold-light);font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s ease;}
+    .back-btn:hover{background:rgba(201,168,76,0.2);color:var(--gold);transform:translateX(-2px);}
+
+    /* Page */
+    .page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:60px 24px 80px;}
+
+    .page-header{text-align:center;margin-bottom:50px;}
+    .hotel-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 24px rgba(201,168,76,0.35);}
+    .hotel-icon i{font-size:28px;color:var(--navy);}
+    .page-header h2{font-family:'Playfair Display',serif;font-size:36px;color:#fff;margin-bottom:12px;}
+    .gold-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;margin:0 auto 20px;}
+    .page-header p{font-size:15px;color:rgba(255,255,255,0.55);max-width:600px;margin:0 auto;line-height:1.7;}
+
+    /* Feature cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:48px;}
+    .card{background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:16px;padding:30px 24px;text-align:center;transition:all 0.3s ease;}
+    .card:hover{background:rgba(255,255,255,0.1);transform:translateY(-4px);}
+    .card-icon{width:54px;height:54px;background:rgba(201,168,76,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+    .card-icon i{font-size:22px;color:var(--gold);}
+    .card h3{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:10px;}
+    .card p{font-size:13.5px;color:rgba(255,255,255,0.5);line-height:1.6;}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
+    .stat{text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.12);border-radius:12px;padding:24px;}
+    .stat-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--gold-light);}
+    .stat-label{font-size:12px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.8px;margin-top:4px;}
+
+    /* Contact strip */
+    .contact-strip{margin-top:48px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+    .contact-strip h3{font-family:'Playfair Display',serif;font-size:20px;color:#fff;}
+    .contact-strip p{font-size:13px;color:rgba(255,255,255,0.45);margin-top:4px;}
+    .btn-contact{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--navy);border-radius:6px;text-decoration:none;font-size:14px;font-weight:700;transition:all 0.3s ease;}
+    .btn-contact:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.4);}
+
+    @media(max-width:640px){.topbar{padding:0 16px;}.stats{grid-template-columns:1fr 1fr;}.contact-strip{flex-direction:column;text-align:center;}}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon"><i class="fas fa-hotel"></i></div>
+    <div>
+      <h1>SABAWYAN HOTEL</h1>
+      <span>Kuiha, Mekelle, Ethiopia</span>
+    </div>
+  </div>
+  <a href="../../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</header>
+
+<main class="page">
+
+  <div class="page-header">
+    <div class="hotel-icon"><i class="fas fa-hotel"></i></div>
+    <h2>About Sabawyan Hotel</h2>
+    <div class="gold-divider"></div>
+    <p>Welcome to Sabawyan Hotel — where luxury meets warmth. We provide elegantly designed rooms, fine dining, and world-class hospitality to make every stay unforgettable.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Rooms</div></div>
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Years of Service</div></div>
+    <div class="stat"><div class="stat-num">5000+</div><div class="stat-label">Happy Guests</div></div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-bed"></i></div>
+      <h3>Comfortable Rooms</h3>
+      <p>Spacious, clean, and elegantly designed rooms to ensure a truly relaxing stay.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-utensils"></i></div>
+      <h3>Fine Dining</h3>
+      <p>Delicious meals prepared by our experienced chefs using the freshest ingredients.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-concierge-bell"></i></div>
+      <h3>24/7 Service</h3>
+      <p>Friendly and professional staff ready to assist you any time of day or night.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Safe & Secure</h3>
+      <p>Your safety and privacy are our top priority throughout your entire stay.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+      <h3>Prime Location</h3>
+      <p>Located in the heart of Kuiha, Mekelle — close to everything you need.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-star"></i></div>
+      <h3>Top Rated</h3>
+      <p>Consistently rated among the best hotels in the region by our guests.</p>
+    </div>
+  </div>
+
+  <div class="contact-strip">
+    <div>
+      <h3>Ready to experience it?</h3>
+      <p>Book your stay or get in touch with our team today.</p>
+    </div>
+    <a href="auth.html" class="btn-contact"><i class="fas fa-sign-in-alt"></i> Book Your Stay</a>
+  </div>
+
+</main>
+</body>
+</html>

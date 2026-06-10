@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Owner — SABAWYAN HOTEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/pages/hotel_owner.css">
+</head>
+<body>
+
+  <div class="dashboard">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-brand">
+        <div class="brand-icon"><i class="fas fa-hotel"></i></div>
+        <div>
+          <h1>SABAWYAN HOTEL</h1>
+          <span>Hotel Owner Panel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <h2 class="dash-title">Operations</h2>
+      <p class="dash-subtitle">Manage your hotel operations</p>
+
+      <div class="manage">
+        <button id="manageroom"><i class="fas fa-door-open"></i> Manage Room</button>
+        <a href="../../php/guest/checkin.php"><button id="checkin"><i class="fas fa-sign-in-alt"></i> Check In</button></a>
+        <a href="../../php/manager/checkout.php"><button id="checkout"><i class="fas fa-sign-out-alt"></i> Check Out</button></a>
+        <a href="../../php/manager/billing_archive.php"><button id="details"><i class="fas fa-users"></i> Customer Details</button></a>
+        <a href="../../php/auth/logout.php"><button id="logout"><i class="fas fa-power-off"></i> Log Out</button></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Room Modal -->
+  <div class="manageroom" id="addRoom">
+    <div class="manageroom-inner">
+      <img src="../../photo/exit.png" alt="Close" class="exit" onclick="closeModal()">
+      <h2>Add New Room</h2>
+      <div class="gold-divider"></div>
+
+      <form action="../../php/manager/add_room.php" method="POST">
+        <label>Room Type</label>
+        <select name="roomtype">
+          <option value="AC">AC</option>
+          <option value="NonAC">Non AC</option>
+        </select>
+
+        <label>Bed Type</label>
+        <select name="bedtype">
+          <option value="Single">Single</option>
+          <option value="Double">Double</option>
+          <option value="Triple">Triple</option>
+        </select>
+
+        <label>Room Number</label>
+        <input type="text" name="roomnumber" placeholder="e.g. 101">
+
+        <label>Price per Night (ETB)</label>
+        <input type="number" name="Price" placeholder="e.g. 1500">
+
+        <button type="submit">Add Room</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+const addRoomEl  = document.getElementById("addRoom");
+const managerBtn = document.getElementById("manageroom");
+
+managerBtn.addEventListener("click", () => {
+  addRoomEl.classList.add("active");
+});
+
+function closeModal() {
+  addRoomEl.classList.remove("active");
+}
+
+addRoomEl.addEventListener("click", (e) => {
+  if (e.target === addRoomEl) closeModal();
+});
+</script>
+
+</body>
+</html>

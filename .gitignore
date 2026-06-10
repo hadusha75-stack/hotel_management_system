@@ -1,0 +1,30 @@
+# ── OS files ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor / IDE ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.user
+
+# ── PHP / Server ──────────────────────────────────────────────
+*.log
+*.cache
+/vendor/
+composer.lock
+
+# ── Environment / Secrets ─────────────────────────────────────
+.env
+db_config.php
+php/core/config.php
+
+# ── XAMPP specific ────────────────────────────────────────────
+/xampp/
+error_log
+
+# ── Duplicate / temp photos ───────────────────────────────────
+photo/*\ -\ Copy.*
+photo/laugh\ -\ Copy.jpg
+photo/hotelnamebg\ -\ Copy.jpg

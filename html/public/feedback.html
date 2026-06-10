@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback — SABAWYAN HOTEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-dark:#a07830;--navy:#0d1b2a;--navy-mid:#1a2e45;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0d1b2a 0%,#1a2e45 50%,#243b55 100%);min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;background:url('../../photo/roombg.jpg') center/cover no-repeat;opacity:0.06;z-index:0;}
+
+    .topbar{position:relative;z-index:10;background:rgba(13,27,42,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+    .brand{display:flex;align-items:center;gap:12px;}
+    .brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .brand-icon i{font-size:17px;color:var(--navy);}
+    .brand h1{font-family:'Playfair Display',serif;font-size:18px;color:#fff;}
+    .brand span{font-size:11px;color:var(--gold-light);}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;color:var(--gold-light);font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s ease;}
+    .back-btn:hover{background:rgba(201,168,76,0.2);color:var(--gold);transform:translateX(-2px);}
+
+    .page{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:60px 24px 80px;}
+
+    .page-header{text-align:center;margin-bottom:36px;}
+    .header-icon{width:68px;height:68px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 8px 24px rgba(201,168,76,0.35);}
+    .header-icon i{font-size:26px;color:var(--navy);}
+    .page-header h2{font-family:'Playfair Display',serif;font-size:32px;color:#fff;margin-bottom:10px;}
+    .gold-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;margin:12px auto 16px;}
+    .page-header p{font-size:14px;color:rgba(255,255,255,0.5);}
+
+    /* Card */
+    .card{background:rgba(255,255,255,0.97);border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,0.28);overflow:hidden;border-top:4px solid var(--gold);}
+    .card-body{padding:36px 32px;}
+
+    /* Star rating */
+    .rating-wrap{margin-bottom:24px;}
+    .rating-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#4a4a6a;margin-bottom:12px;}
+    .stars{display:flex;gap:8px;justify-content:center;}
+    .star-btn{background:none;border:none;font-size:32px;cursor:pointer;color:#ddd;transition:all 0.2s ease;padding:0;}
+    .star-btn:hover,.star-btn.active{color:#f1c40f;transform:scale(1.15);}
+
+    /* Form */
+    .form-group{margin-bottom:18px;}
+    .form-group label{display:block;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#4a4a6a;margin-bottom:7px;}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:6px;font-size:14px;font-family:'Inter',sans-serif;background:#fafafa;color:#1a1a2e;transition:all 0.3s ease;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+    .form-group textarea{resize:vertical;min-height:110px;}
+    .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234a4a6a' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+
+    .btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));color:var(--navy);border:none;border-radius:6px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,0.42);}
+
+    /* Success */
+    .success-screen{display:none;text-align:center;padding:48px 32px;}
+    .success-screen i{font-size:52px;color:#27ae60;margin-bottom:16px;display:block;}
+    .success-screen h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--navy);margin-bottom:8px;}
+    .success-screen p{font-size:14px;color:#666;margin-bottom:24px;}
+    .btn-home{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;}
+
+    @media(max-width:480px){.topbar{padding:0 16px;}.card-body{padding:24px 20px;}}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon"><i class="fas fa-hotel"></i></div>
+    <div>
+      <h1>SABAWYAN HOTEL</h1>
+      <span>Guest Feedback</span>
+    </div>
+  </div>
+  <a href="../../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</header>
+
+<main class="page">
+
+  <div class="page-header">
+    <div class="header-icon"><i class="fas fa-star"></i></div>
+    <h2>Share Your Experience</h2>
+    <div class="gold-divider"></div>
+    <p>Your feedback helps us serve you better. Tell us about your stay.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+
+      <div id="formSection">
+        <form action="../../php/public/save_feedback.php" method="POST" id="feedbackForm">
+
+          <div class="form-group">
+            <label><i class="fas fa-user" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Your Name</label>
+            <input type="text" name="name" placeholder="Full name" required>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-envelope" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Email Address</label>
+            <input type="email" name="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-star" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Overall Experience</label>
+            <select name="experience" id="experienceSelect" required>
+              <option value="">— How was your stay? —</option>
+              <option value="Excellent">⭐⭐⭐⭐⭐ &nbsp; Excellent</option>
+              <option value="Good">⭐⭐⭐⭐ &nbsp; Good</option>
+              <option value="Average">⭐⭐⭐ &nbsp; Average</option>
+              <option value="Poor">⭐ &nbsp; Poor</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-comment-dots" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Tell Us More</label>
+            <textarea name="message" placeholder="What did you enjoy? What can we improve?" required></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <i class="fas fa-paper-plane"></i> Submit Feedback
+          </button>
+        </form>
+      </div>
+
+      <div class="success-screen" id="successScreen">
+        <i class="fas fa-check-circle"></i>
+        <h3>Thank You!</h3>
+        <p>Your feedback has been submitted. We truly appreciate you taking the time to share your experience.</p>
+        <a href="../../index.html" class="btn-home"><i class="fas fa-home"></i> Back to Home</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('sent') === '1') {
+        document.getElementById('formSection').style.display  = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+    if (params.get('error') === 'empty') {
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.4);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13.5px;color:#e74c3c;display:flex;align-items:center;gap:10px;';
+        banner.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill in all fields before submitting.';
+        const form = document.getElementById('formSection');
+        if (form) form.insertBefore(banner, form.firstChild);
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+})();
+</script>
+</body>
+</html>

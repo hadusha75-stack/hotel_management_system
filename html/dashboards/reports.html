@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Reports — Sabawyan Hotel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root{
+            --gold:#c9a84c;--gold-light:#e8c97a;--gold-dark:#a07830;
+            --navy:#0d1b2a;--navy-mid:#1a2e45;
+            --green:#27ae60;--green-dark:#1e8449;
+            --text-dark:#1a1a2e;--text-mid:#4a4a6a;--text-light:#8a8aaa;
+            --shadow-lg:0 16px 48px rgba(0,0,0,0.28);
+            --radius-sm:6px;--radius-md:12px;--radius-lg:20px;
+            --transition:all 0.3s ease;
+        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0a1f0a 0%,#0d2b1a 50%,#0f3320 100%);background-attachment:fixed;min-height:100vh;}
+        body::before{content:'';position:fixed;inset:0;background:url('../../photo/hotelnamebg.jpg') center/cover no-repeat;opacity:0.04;z-index:0;}
+
+        /* Topbar */
+        .topbar{position:relative;z-index:10;background:rgba(10,20,10,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(39,174,96,0.25);padding:0 32px;height:66px;display:flex;align-items:center;justify-content:space-between;}
+        .topbar-brand{display:flex;align-items:center;gap:12px;}
+        .brand-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--green-dark),var(--green));border-radius:10px;display:flex;align-items:center;justify-content:center;}
+        .brand-icon i{font-size:18px;color:#fff;}
+        .brand-text h1{font-family:'Playfair Display',serif;font-size:19px;color:#fff;line-height:1.2;}
+        .brand-text span{font-size:11.5px;color:#6ee89a;}
+        .topbar-right{display:flex;align-items:center;gap:10px;}
+        .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:var(--radius-sm);color:#6ee89a;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;text-decoration:none;transition:var(--transition);}
+        .back-btn:hover{background:rgba(39,174,96,0.2);border-color:var(--green);color:var(--green);transform:translateX(-2px);}
+        .print-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:linear-gradient(135deg,var(--green-dark),var(--green));border:none;border-radius:var(--radius-sm);color:#fff;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:var(--transition);}
+        .print-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(39,174,96,0.4);}
+
+        /* Page */
+        .page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:36px 24px 60px;}
+
+        /* Page Header */
+        .page-header{margin-bottom:28px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+        .page-header h2{font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:4px;}
+        .page-header p{font-size:14px;color:rgba(255,255,255,0.4);}
+        .green-divider{width:56px;height:3px;background:linear-gradient(90deg,var(--green-dark),var(--green));border-radius:2px;margin:10px 0 0;}
+
+        /* Date Filter */
+        .filter-bar{background:rgba(39,174,96,0.06);border:1px solid rgba(39,174,96,0.18);border-radius:var(--radius-md);padding:18px 24px;margin-bottom:28px;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;}
+        .filter-bar label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#6ee89a;margin-bottom:6px;}
+        .filter-bar input[type="date"]{padding:9px 14px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(39,174,96,0.3);border-radius:var(--radius-sm);color:#fff;font-size:14px;font-family:'Inter',sans-serif;transition:var(--transition);}
+        .filter-bar input[type="date"]:focus{outline:none;border-color:var(--green);background:rgba(255,255,255,0.12);}
+        .filter-bar input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:0.6;}
+        .btn-filter{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border:none;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:var(--transition);box-shadow:0 4px 14px rgba(39,174,96,0.3);}
+        .btn-filter:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(39,174,96,0.4);}
+        .quick-btns{display:flex;gap:8px;flex-wrap:wrap;align-self:flex-end;}
+        .quick-btn{padding:9px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);color:rgba(255,255,255,0.6);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:var(--transition);}
+        .quick-btn:hover{background:rgba(39,174,96,0.15);border-color:rgba(39,174,96,0.4);color:#6ee89a;}
+
+        /* KPI Row */
+        .kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
+        .kpi-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:18px 20px;transition:var(--transition);}
+        .kpi-card:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px);}
+        .kpi-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:12px;}
+        .ki-green {background:rgba(39,174,96,0.18); color:#2ecc71;}
+        .ki-gold  {background:rgba(201,168,76,0.18);color:var(--gold);}
+        .ki-blue  {background:rgba(52,152,219,0.18);color:#3498db;}
+        .ki-orange{background:rgba(230,126,34,0.18);color:#e67e22;}
+        .ki-purple{background:rgba(142,68,173,0.18);color:#9b59b6;}
+        .kpi-label{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+        .kpi-value{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#fff;line-height:1;}
+        .kpi-value.green{color:#2ecc71;}
+        .kpi-value.gold{color:var(--gold-light);}
+        .kpi-sub{font-size:11.5px;color:rgba(255,255,255,0.3);margin-top:4px;}
+
+        /* Section */
+        .section-title{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.35);margin-bottom:16px;margin-top:32px;}
+        .section-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08);}
+
+        /* Charts Grid */
+        .charts-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:8px;}
+        .chart-card{background:rgba(255,255,255,0.97);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:24px;border-top:3px solid var(--green);}
+        .chart-card h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:4px;}
+        .chart-card p{font-size:12px;color:var(--text-light);margin-bottom:18px;}
+        .chart-wrap{position:relative;height:260px;}
+
+        /* Table Card */
+        .table-card{background:rgba(255,255,255,0.97);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden;border-top:3px solid var(--green);}
+        .table-card-header{padding:18px 22px 0;}
+        .table-card-header h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:3px;}
+        .table-card-header p{font-size:12px;color:var(--text-light);margin-bottom:14px;}
+        .table-scroll{overflow-x:auto;}
+        table{width:100%;border-collapse:collapse;font-size:13px;}
+        thead tr{background:linear-gradient(135deg,var(--navy),var(--navy-mid));}
+        thead th{padding:11px 14px;text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#6ee89a;white-space:nowrap;}
+        tbody tr{border-bottom:1px solid #f0f0f0;transition:var(--transition);}
+        tbody tr:last-child{border-bottom:none;}
+        tbody tr:hover{background:#f0fdf8;}
+        tbody tr:nth-child(even){background:#fafafa;}
+        tbody tr:nth-child(even):hover{background:#f0fdf8;}
+        tbody td{padding:11px 14px;color:var(--text-dark);vertical-align:middle;}
+        .amount{font-weight:700;color:#27ae60;}
+        .table-footer-bar{padding:12px 22px;background:#f0fdf8;border-top:1px solid #d4f5ea;font-size:12px;color:var(--text-mid);}
+
+        /* Top rooms */
+        .top-rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+        .room-stat-card{background:rgba(255,255,255,0.97);border-radius:var(--radius-md);padding:18px;box-shadow:0 4px 16px rgba(0,0,0,0.15);border-left:4px solid var(--green);}
+        .room-stat-card .rn{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);}
+        .room-stat-card .rt{font-size:12px;color:var(--text-light);margin-bottom:10px;}
+        .room-stat-card .rv{font-size:18px;font-weight:700;color:#27ae60;}
+        .room-stat-card .rs{font-size:11.5px;color:var(--text-mid);margin-top:4px;}
+
+        /* Loading */
+        .loading{text-align:center;padding:40px;color:rgba(255,255,255,0.4);}
+        .loading i{font-size:32px;margin-bottom:12px;display:block;animation:spin 1s linear infinite;}
+        @keyframes spin{to{transform:rotate(360deg);}}
+
+        /* Print styles */
+        @media print {
+            body{background:#fff!important;}
+            body::before{display:none;}
+            .topbar,.filter-bar,.print-btn,.back-btn,.quick-btns{display:none!important;}
+            .page{padding:0;}
+            .kpi-card,.chart-card,.table-card,.room-stat-card{box-shadow:none!important;border:1px solid #ddd!important;}
+            .chart-card,.table-card{break-inside:avoid;}
+            .charts-grid{grid-template-columns:1fr!important;}
+        }
+
+        @media(max-width:768px){
+            .topbar{padding:0 16px;}
+            .page{padding:24px 12px 40px;}
+            .charts-grid{grid-template-columns:1fr;}
+            .kpi-row{grid-template-columns:repeat(2,1fr);}
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-brand">
+        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="brand-text"><h1>Sabawyan Hotel</h1><span>Financial Reports</span></div>
+    </div>
+    <div class="topbar-right">
+        <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print / PDF</button>
+        <a href="finance.html" class="back-btn"><i class="fas fa-arrow-left"></i> Dashboard</a>
+    </div>
+</header>
+
+<main class="page">
+
+    <div class="page-header">
+        <div>
+            <h2><i class="fas fa-file-chart-line" style="color:#6ee89a;margin-right:10px;font-size:24px;"></i>Financial Reports</h2>
+            <p id="reportRangeLabel">Loading report data…</p>
+            <div class="green-divider"></div>
+        </div>
+    </div>
+
+    <!-- Date Filter -->
+    <div class="filter-bar">
+        <div>
+            <label><i class="fas fa-calendar-alt"></i> From</label>
+            <input type="date" id="dateFrom">
+        </div>
+        <div>
+            <label><i class="fas fa-calendar-alt"></i> To</label>
+            <input type="date" id="dateTo">
+        </div>
+        <button class="btn-filter" onclick="loadReport()"><i class="fas fa-sync-alt"></i> Generate</button>
+        <div class="quick-btns">
+            <button class="quick-btn" onclick="setRange('this_month')">This Month</button>
+            <button class="quick-btn" onclick="setRange('last_month')">Last Month</button>
+            <button class="quick-btn" onclick="setRange('this_year')">This Year</button>
+            <button class="quick-btn" onclick="setRange('all')">All Time</button>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="section-title"><i class="fas fa-chart-bar"></i> Summary for Selected Period</div>
+    <div class="kpi-row" id="kpiRow">
+        <div class="loading"><i class="fas fa-spinner"></i>Loading…</div>
+    </div>
+
+    <!-- Charts -->
+    <div class="section-title"><i class="fas fa-chart-area"></i> Revenue Trend (Last 12 Months)</div>
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Monthly Revenue</h3>
+            <p>Total collected revenue per month</p>
+            <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Feedback Breakdown</h3>
+            <p>Guest experience ratings</p>
+            <div class="chart-wrap"><canvas id="feedbackChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Top Rooms -->
+    <div class="section-title"><i class="fas fa-trophy"></i> Top 5 Rooms by Revenue</div>
+    <div class="top-rooms-grid" id="topRoomsGrid">
+        <div class="loading"><i class="fas fa-spinner"></i>Loading…</div>
+    </div>
+
+    <!-- Recent Checkouts Table -->
+    <div class="section-title" style="margin-top:32px;"><i class="fas fa-list"></i> Recent Checkouts in Period</div>
+    <div class="table-card">
+        <div class="table-card-header">
+            <h3>Checkout Records</h3>
+            <p id="tableSubtitle">Showing recent checkouts</p>
+        </div>
+        <div class="table-scroll">
+            <table id="checkoutTable">
+                <thead><tr>
+                    <th><i class="fas fa-user"></i> Guest</th>
+                    <th><i class="fas fa-door-open"></i> Room</th>
+                    <th><i class="fas fa-building"></i> Type</th>
+                    <th><i class="fas fa-sign-in-alt"></i> Check-In</th>
+                    <th><i class="fas fa-sign-out-alt"></i> Check-Out</th>
+                    <th><i class="fas fa-moon"></i> Nights</th>
+                    <th><i class="fas fa-coins"></i> Total</th>
+                </tr></thead>
+                <tbody id="checkoutBody">
+                    <tr><td colspan="7" style="text-align:center;padding:30px;color:#888;">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer-bar" id="tableFooter">—</div>
+    </div>
+
+</main>
+
+<script>
+    let revenueChart = null;
+    let feedbackChart = null;
+
+    // ── Date helpers ─────────────────────────────────────────
+    function today()     { return new Date().toISOString().split('T')[0]; }
+    function firstOfMonth(d) {
+        const dt = d || new Date();
+        return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-01';
+    }
+
+    function setRange(type) {
+        const now = new Date();
+        let from, to = today();
+        if (type === 'this_month') {
+            from = firstOfMonth();
+        } else if (type === 'last_month') {
+            const lm = new Date(now.getFullYear(), now.getMonth()-1, 1);
+            from = firstOfMonth(lm);
+            const le = new Date(now.getFullYear(), now.getMonth(), 0);
+            to = le.toISOString().split('T')[0];
+        } else if (type === 'this_year') {
+            from = now.getFullYear()+'-01-01';
+        } else {
+            from = '2000-01-01';
+        }
+        document.getElementById('dateFrom').value = from;
+        document.getElementById('dateTo').value   = to;
+        loadReport();
+    }
+
+    function fmt(n) {
+        return '$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+    }
+
+    // ── Load Report ──────────────────────────────────────────
+    // Build correct API URL relative to this page's location
+    // This page is at /php/html/dashboards/reports.php
+    // API is at    /php/php/finance/reports.php
+    // So relative path is: ../../php/finance/reports.php
+    const API_BASE = '../../php';
+
+    function loadReport() {
+        const from = document.getElementById('dateFrom').value || firstOfMonth();
+        const to   = document.getElementById('dateTo').value   || today();
+
+        fetch(API_BASE + '/finance/reports.php?from='+from+'&to='+to, {
+            credentials: 'include'
+        })
+            .then(r => {
+                // Check if response is actually JSON
+                const ct = r.headers.get('content-type') || '';
+                if (!ct.includes('application/json')) {
+                    // Got HTML (probably a redirect or PHP error page)
+                    return r.text().then(html => {
+                        throw new Error('Server returned non-JSON. Status: ' + r.status + '. Possible path or session issue.');
+                    });
+                }
+                return r.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('kpiRow').innerHTML =
+                        '<div style="color:#f5a0a0;padding:20px;background:rgba(231,76,60,0.1);border-radius:8px;"><i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>' + data.error + '</div>';
+                    return;
+                }
+                renderKPIs(data, from, to);
+                renderRevenueChart(data.monthly_revenue);
+                renderFeedbackChart(data.feedback);
+                renderTopRooms(data.top_rooms);
+                renderTable(data.recent, from, to);
+            })
+            .catch((err) => {
+                document.getElementById('kpiRow').innerHTML =
+                    '<div style="color:#f5a0a0;padding:20px;background:rgba(231,76,60,0.1);border-radius:8px;font-size:13px;">' +
+                    '<i class="fas fa-exclamation-circle" style="margin-right:8px;"></i>' +
+                    '<strong>Could not load report data.</strong><br>' +
+                    '<span style="opacity:0.7;">Error: ' + err.message + '</span><br>' +
+                    '<span style="opacity:0.5;font-size:12px;">Check that the file <code>php/finance/reports.php</code> is uploaded and the database is connected.</span>' +
+                    '</div>';
+            });
+    }
+
+    // ── KPI Cards ────────────────────────────────────────────
+    function renderKPIs(data, from, to) {
+        const s = data.range_stats || {};
+        const r = data.rooms       || {};
+        const a = data.active      || {};
+        const occ = r.total > 0 ? Math.round((r.booked/r.total)*100) : 0;
+
+        document.getElementById('reportRangeLabel').textContent =
+            'Period: '+from+' to '+to;
+
+        document.getElementById('kpiRow').innerHTML = `
+            <div class="kpi-card">
+                <div class="kpi-icon ki-green"><i class="fas fa-dollar-sign"></i></div>
+                <div class="kpi-label">Revenue in Period</div>
+                <div class="kpi-value green">${fmt(s.total)}</div>
+                <div class="kpi-sub">${s.checkouts||0} checkouts</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon ki-gold"><i class="fas fa-chart-line"></i></div>
+                <div class="kpi-label">Avg Revenue / Stay</div>
+                <div class="kpi-value gold">${fmt(s.avg_stay)}</div>
+                <div class="kpi-sub">Per checkout</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon ki-blue"><i class="fas fa-moon"></i></div>
+                <div class="kpi-label">Avg Nights / Stay</div>
+                <div class="kpi-value">${Number(s.avg_nights||0).toFixed(1)}</div>
+                <div class="kpi-sub">Nights per guest</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon ki-orange"><i class="fas fa-bed"></i></div>
+                <div class="kpi-label">Occupancy Rate</div>
+                <div class="kpi-value" style="color:#e67e22;">${occ}%</div>
+                <div class="kpi-sub">${r.booked||0} of ${r.total||0} rooms</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon ki-purple"><i class="fas fa-users"></i></div>
+                <div class="kpi-label">Active Guests Now</div>
+                <div class="kpi-value">${a.cnt||0}</div>
+                <div class="kpi-sub">Pending: ${fmt(a.pending)}</div>
+            </div>
+        `;
+    }
+
+    // ── Revenue Chart ────────────────────────────────────────
+    function renderRevenueChart(monthly) {
+        const labels   = (monthly||[]).map(m => {
+            const [y,mo] = m.month.split('-');
+            return new Date(y,mo-1).toLocaleString('en-US',{month:'short',year:'2-digit'});
+        });
+        const revenues = (monthly||[]).map(m => parseFloat(m.revenue||0));
+        const guests   = (monthly||[]).map(m => parseInt(m.guests||0));
+
+        if (revenueChart) revenueChart.destroy();
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'Revenue ($)',
+                        data: revenues,
+                        backgroundColor: 'rgba(39,174,96,0.7)',
+                        borderColor: '#27ae60',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Guests',
+                        data: guests,
+                        type: 'line',
+                        borderColor: '#c9a84c',
+                        backgroundColor: 'rgba(201,168,76,0.1)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#c9a84c',
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { font: { family: 'Inter', size: 12 } } } },
+                scales: {
+                    y:  { beginAtZero:true, grid:{ color:'rgba(0,0,0,0.06)' }, ticks:{ callback: v => '$'+v.toLocaleString() } },
+                    y1: { beginAtZero:true, position:'right', grid:{ drawOnChartArea:false }, ticks:{ stepSize:1 } }
+                }
+            }
+        });
+    }
+
+    // ── Feedback Chart ───────────────────────────────────────
+    function renderFeedbackChart(feedback) {
+        const colorMap = {
+            excellent:'#27ae60', good:'#3498db',
+            average:'#f39c12', poor:'#e74c3c'
+        };
+        const labels = (feedback||[]).map(f => f.experience);
+        const values = (feedback||[]).map(f => parseInt(f.cnt));
+        const colors = labels.map(l => colorMap[l.toLowerCase()] || '#95a5a6');
+
+        if (feedbackChart) feedbackChart.destroy();
+        const ctx = document.getElementById('feedbackChart').getContext('2d');
+        feedbackChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 3, borderColor: '#fff' }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 }, padding: 16 } }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+
+    // ── Top Rooms ────────────────────────────────────────────
+    function renderTopRooms(rooms) {
+        if (!rooms || rooms.length === 0) {
+            document.getElementById('topRoomsGrid').innerHTML =
+                '<div style="color:rgba(255,255,255,0.4);padding:20px;">No data available.</div>';
+            return;
+        }
+        const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+        document.getElementById('topRoomsGrid').innerHTML = rooms.map((r,i) => `
+            <div class="room-stat-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                    <span class="rn">${medals[i]} Room ${r.roomnumber}</span>
+                </div>
+                <div class="rt">${r.roomtype} · ${r.bedtype}</div>
+                <div class="rv">${fmt(r.revenue)}</div>
+                <div class="rs">${r.stays} stay${r.stays!=1?'s':''} · avg ${Number(r.avg_nights||0).toFixed(1)} nights</div>
+            </div>
+        `).join('');
+    }
+
+    // ── Checkout Table ───────────────────────────────────────
+    function renderTable(rows, from, to) {
+        const tbody = document.getElementById('checkoutBody');
+        if (!rows || rows.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#888;">No checkouts found in this period.</td></tr>';
+            document.getElementById('tableFooter').textContent = '0 records';
+            document.getElementById('tableSubtitle').textContent = 'No records for '+from+' to '+to;
+            return;
+        }
+        tbody.innerHTML = rows.map(r => `
+            <tr>
+                <td style="font-weight:600;">${r.name}</td>
+                <td>${r.roomnumber}</td>
+                <td>${r.roomtype}</td>
+                <td style="font-size:12px;color:#666;">${r.checkin}</td>
+                <td style="font-size:12px;color:#666;">${r.checkout}</td>
+                <td style="text-align:center;font-weight:600;">${r.daystayed}</td>
+                <td class="amount">${fmt(r.totalamount)}</td>
+            </tr>
+        `).join('');
+        document.getElementById('tableFooter').textContent =
+            'Showing '+rows.length+' record'+(rows.length!==1?'s':'')+' · '+from+' to '+to;
+        document.getElementById('tableSubtitle').textContent =
+            rows.length+' checkout'+(rows.length!==1?'s':'')+' from '+from+' to '+to;
+    }
+
+    // ── Init — default to All Time so revenue always shows ──
+    document.getElementById('dateFrom').value = '2000-01-01';
+    document.getElementById('dateTo').value   = today();
+    loadReport();
+</script>
+</body>
+</html>

@@ -1,0 +1,780 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — SABAWYAN HOTEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold:       #c9a84c; --gold-light: #e8c97a; --gold-dark: #a07830;
+      --navy:       #0d1b2a; --navy-mid:   #1a2e45; --navy-light: #243b55;
+      --danger:     #e74c3c; --success:    #2ecc71;
+      --text-dark:  #1a1a2e; --text-mid:   #4a4a6a; --text-light: #8a8aaa;
+      --shadow-lg:  0 20px 60px rgba(0,0,0,0.35);
+      --shadow-gold:0 8px 24px rgba(201,168,76,0.3);
+      --radius-sm:  8px; --radius-md: 14px; --radius-lg: 22px; --radius-xl: 30px;
+      --transition: all 0.3s ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Inter", sans-serif; min-height: 100vh; display: flex; background: var(--navy); }
+
+    /* ── Left Panel ── */
+    .left-panel {
+      flex: 1; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 48px; min-height: 100vh;
+    }
+    .left-panel::before {
+      content: ""; position: absolute; inset: 0;
+      background: url("../../photo/checkinbg.jpg") center/cover no-repeat;
+      z-index: 0;
+    }
+    .left-panel::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.4) 50%, rgba(13,27,42,0.15) 100%);
+      z-index: 1;
+    }
+    .left-content { position: relative; z-index: 2; }
+    .hotel-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 30px; padding: 8px 18px; margin-bottom: 24px;
+    }
+    .hotel-badge i { color: var(--gold); font-size: 14px; }
+    .hotel-badge span { font-size: 12px; font-weight: 600; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; }
+    .left-content h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 42px; color: #fff; line-height: 1.2; margin-bottom: 16px;
+    }
+    .left-content h1 span { color: var(--gold-light); }
+    .left-content p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 380px; margin-bottom: 32px; }
+    .features { display: flex; flex-direction: column; gap: 12px; }
+    .feature-item { display: flex; align-items: center; gap: 12px; }
+    .feature-item .fi-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 14px; flex-shrink: 0;
+    }
+    .feature-item span { font-size: 13.5px; color: rgba(255,255,255,0.65); }
+    .back-home {
+      position: absolute; top: 28px; left: 28px; z-index: 3;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; color: rgba(255,255,255,0.7);
+      font-size: 12.5px; font-weight: 600; text-decoration: none;
+      transition: var(--transition);
+    }
+    .back-home:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+    /* ── Right Panel ── */
+    .right-panel {
+      width: 480px; flex-shrink: 0;
+      background: #fff; display: flex; flex-direction: column;
+      justify-content: center; padding: 48px 44px;
+      position: relative; overflow-y: auto;
+    }
+
+    /* ── Role Tabs ── */
+    .role-tabs {
+      display: flex; gap: 6px; margin-bottom: 28px;
+      background: #f4f4f6; border-radius: var(--radius-sm);
+      padding: 4px;
+    }
+    .role-tab {
+      flex: 1; padding: 9px 8px; border: none; border-radius: 6px;
+      font-size: 12px; font-weight: 600; font-family: "Inter", sans-serif;
+      cursor: pointer; transition: var(--transition);
+      background: transparent; color: var(--text-light);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .role-tab.active { background: #fff; color: var(--navy); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .role-tab i { font-size: 12px; }
+
+    /* ── Form Header ── */
+    .form-header { margin-bottom: 28px; }
+    .form-header h2 { font-family: "Playfair Display", serif; font-size: 26px; color: var(--navy); margin-bottom: 5px; }
+    .form-header p { font-size: 13.5px; color: var(--text-light); }
+    .gold-line { width: 40px; height: 3px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 2px; margin: 10px 0 0; }
+
+    /* ── Auth Toggle ── */
+    .auth-toggle {
+      display: flex; background: #f4f4f6; border-radius: var(--radius-sm);
+      padding: 4px; margin-bottom: 24px; gap: 4px;
+    }
+    .toggle-btn {
+      flex: 1; padding: 10px; border: none; border-radius: 6px;
+      font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif;
+      cursor: pointer; transition: var(--transition);
+      background: transparent; color: var(--text-light);
+    }
+    .toggle-btn.active { background: #fff; color: var(--navy); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+    /* ── Form ── */
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 11.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--text-mid); margin-bottom: 6px;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: #ccc; font-size: 14px; pointer-events: none; transition: var(--transition);
+    }
+    .input-wrap input {
+      width: 100%; padding: 12px 14px 12px 42px;
+      border: 1.5px solid #e8e8e8; border-radius: var(--radius-sm);
+      font-size: 14.5px; font-family: "Inter", sans-serif;
+      background: #fafafa; color: var(--text-dark);
+      transition: var(--transition);
+    }
+    .input-wrap input:focus { outline: none; border-color: var(--gold); background: #fff; box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
+    .input-wrap input:focus + i,
+    .input-wrap i.focused { color: var(--gold-dark); }
+    .input-wrap input.error { border-color: var(--danger); background: #fff8f8; }
+    /* icon is before input in DOM so use adjacent sibling trick via JS */
+    .input-wrap.focused i { color: var(--gold-dark); }
+
+    /* password toggle */
+    .pw-toggle {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: #ccc; cursor: pointer; font-size: 14px; transition: var(--transition);
+      pointer-events: all;
+    }
+    .pw-toggle:hover { color: var(--gold-dark); }
+    .input-wrap input[type="password"],
+    .input-wrap input.pw { padding-right: 42px; }
+
+    .error-msg { font-size: 11.5px; color: var(--danger); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+    .error-msg i { font-size: 10px; }
+
+    /* ── Submit Button ── */
+    .btn-submit {
+      width: 100%; padding: 14px; margin-top: 8px;
+      border: none; border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 700; font-family: "Inter", sans-serif;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-gold { background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light)); color: var(--navy); box-shadow: var(--shadow-gold); }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(201,168,76,0.42); }
+    .btn-navy { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); color: #fff; box-shadow: 0 6px 20px rgba(13,27,42,0.3); }
+    .btn-navy:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(13,27,42,0.4); }
+
+    /* ── Switch link ── */
+    .switch-link { text-align: center; margin-top: 20px; font-size: 13.5px; color: var(--text-light); }
+    .switch-link a { color: var(--gold-dark); font-weight: 600; text-decoration: none; cursor: pointer; }
+    .switch-link a:hover { color: var(--gold); text-decoration: underline; }
+
+    /* ── Manager/Staff note ── */
+    .role-note {
+      background: #f8f6f0; border: 1px solid rgba(201,168,76,0.2);
+      border-left: 3px solid var(--gold); border-radius: var(--radius-sm);
+      padding: 12px 14px; margin-bottom: 20px;
+      font-size: 12.5px; color: var(--text-mid); line-height: 1.5;
+    }
+    .role-note i { color: var(--gold-dark); margin-right: 5px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .left-panel { display: none; }
+      .right-panel { width: 100%; min-height: 100vh; padding: 40px 28px; }
+    }
+    @media (max-width: 480px) {
+      .right-panel { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Left Panel -->
+<div class="left-panel">
+  <a href="../../index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+  <div class="left-content">
+    <div class="hotel-badge"><i class="fas fa-hotel"></i><span>Sabawyan Hotel</span></div>
+    <h1>Experience <span>Luxury</span><br>Like Never Before</h1>
+    <p>Sign in to manage your stay, explore our premium rooms, and enjoy world-class hospitality at Sabawyan Hotel.</p>
+    <div class="features">
+      <div class="feature-item"><div class="fi-icon"><i class="fas fa-bed"></i></div><span>Premium rooms with modern amenities</span></div>
+      <div class="feature-item"><div class="fi-icon"><i class="fas fa-concierge-bell"></i></div><span>24/7 concierge and room service</span></div>
+      <div class="feature-item"><div class="fi-icon"><i class="fas fa-shield-alt"></i></div><span>Secure booking and guest privacy</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Right Panel -->
+<div class="right-panel">
+
+  <!-- Role Tabs — Manager/Staff hidden by default, shown only via ?portal=staff -->
+  <div class="role-tabs" id="roleTabs" style="display:none;">
+    <button class="role-tab active" data-role="customer" onclick="switchRole('customer')">
+      <i class="fas fa-user"></i> Guest
+    </button>
+    <button class="role-tab" data-role="manager" onclick="switchRole('manager')">
+      <i class="fas fa-user-tie"></i> Manager
+    </button>
+    <button class="role-tab" data-role="staff" onclick="switchRole('staff')">
+      <i class="fas fa-broom"></i> Staff
+    </button>
+  </div>
+
+  <!-- Form Header -->
+  <div class="form-header" id="formHeader">
+    <h2 id="formTitle">Welcome Back</h2>
+    <p id="formSubtitle">Sign in to your guest account</p>
+    <div class="gold-line"></div>
+  </div>
+
+  <!-- Auth Toggle (Login / Sign Up) — only for customers -->
+  <div class="auth-toggle" id="authToggle">
+    <button class="toggle-btn active" id="btnLogin" onclick="showLogin()">Log In</button>
+    <button class="toggle-btn" id="btnSignup" onclick="showSignup()">Sign Up</button>
+  </div>
+
+  <!-- ── LOGIN FORM ── -->
+  <div class="form-section active" id="loginSection">
+
+    <div class="role-note" id="loginRoleNote" style="display:none;"></div>
+
+    <form id="login_form" action="../../php/auth/login.php" method="POST">
+      <input type="hidden" name="role" id="loginRoleInput" value="customer">
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="text" id="login_email" name="email" placeholder="you@example.com">
+        </div>
+        <span class="error-msg" id="loginEmailError"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="login_password" name="password" placeholder="Your password" class="pw">
+          <i class="fas fa-eye pw-toggle" id="toggleLoginPw" onclick="togglePw('login_password','toggleLoginPw')"></i>
+        </div>
+        <span class="error-msg" id="loginPasswordError"></span>
+      </div>
+
+      <button type="submit" class="btn-submit btn-navy" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> Sign In
+      </button>
+    </form>
+
+    <div style="text-align:right;margin-top:10px;">
+      <a onclick="showForgotPassword()" style="font-size:13px;color:var(--gold-dark);cursor:pointer;text-decoration:none;font-weight:600;">
+        <i class="fas fa-key" style="margin-right:4px;font-size:11px;"></i>Forgot Password?
+      </a>
+    </div>
+
+    <div class="switch-link" id="loginSwitchLink">
+      Don't have an account? <a onclick="showSignup()">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- ── SIGN UP FORM (customers only) ── -->
+  <div class="form-section" id="signupSection">
+    <form id="signup_form" action="../../php/auth/signup.php" method="POST">
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <div class="input-wrap">
+          <i class="fas fa-user"></i>
+          <input type="text" id="signup_name" name="username" placeholder="e.g. Ashenafi Hadush">
+        </div>
+        <span class="error-msg" id="nameError"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="signup_email" name="email" placeholder="you@gmail.com">
+        </div>
+        <span class="error-msg" id="emailError"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="signup_password" name="password" placeholder="Min. 7 characters" class="pw">
+          <i class="fas fa-eye pw-toggle" id="toggleSignupPw" onclick="togglePw('signup_password','toggleSignupPw')"></i>
+        </div>
+        <span class="error-msg" id="passwordError"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-map-marker-alt"></i>
+          <input type="text" id="signup_address" name="address" placeholder="Your city or address">
+        </div>
+        <span class="error-msg" id="addressError"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Security Hint Question</label>
+        <div class="input-wrap">
+          <i class="fas fa-shield-alt"></i>
+          <select id="signup_hint" name="security_hint" style="padding-left:42px;">
+            <option value="">— Choose a security question —</option>
+            <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+            <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+            <option value="What city were you born in?">What city were you born in?</option>
+            <option value="What is your favourite food?">What is your favourite food?</option>
+            <option value="What was the name of your primary school?">What was the name of your primary school?</option>
+            <option value="What is your oldest sibling's name?">What is your oldest sibling's name?</option>
+          </select>
+        </div>
+        <span class="error-msg" id="hintError"></span>
+      </div>
+
+      <div class="form-group">
+        <label>Security Answer</label>
+        <div class="input-wrap">
+          <i class="fas fa-key"></i>
+          <input type="text" id="signup_answer" name="security_answer" placeholder="Your answer (case-insensitive)">
+        </div>
+        <span class="error-msg" id="answerError"></span>
+      </div>
+
+      <button type="submit" class="btn-submit btn-gold">
+        <i class="fas fa-user-plus"></i> Create Account
+      </button>
+    </form>
+
+    <div class="switch-link">
+      Already have an account? <a onclick="showLogin()">Log In</a>
+    </div>
+  </div>
+
+</div><!-- /right-panel -->
+
+<script>
+  // ── Role config ──────────────────────────────────────────
+  const roleConfig = {
+    customer: {
+      title:    "Welcome Back",
+      subtitle: "Sign in to your guest account",
+      action:   "../../php/auth/login.php",
+      note:     null,
+      showToggle: true,
+      loginBtn: "Sign In"
+    },
+    manager: {
+      title:    "Manager Portal",
+      subtitle: "Sign in to the management dashboard",
+      action:   "../../php/auth/login.php",
+      note:     '<i class="fas fa-info-circle"></i> Use your manager credentials to access the dashboard.',
+      showToggle: false,
+      loginBtn: "Manager Sign In"
+    },
+    staff: {
+      title:    "Staff Portal",
+      subtitle: "Sign in to the housekeeping dashboard",
+      action:   "../../php/auth/login.php",
+      note:     '<i class="fas fa-info-circle"></i> Use your staff credentials to access the housekeeping panel.',
+      showToggle: false,
+      loginBtn: "Staff Sign In"
+    }
+  };
+
+  let currentRole = "customer";
+
+  function switchRole(role) {
+    currentRole = role;
+    const cfg = roleConfig[role];
+
+    // Update role tab active state
+    document.querySelectorAll(".role-tab").forEach(t => t.classList.toggle("active", t.dataset.role === role));
+
+    // Update header
+    document.getElementById("formTitle").textContent    = cfg.title;
+    document.getElementById("formSubtitle").textContent = cfg.subtitle;
+
+    // Show/hide auth toggle
+    document.getElementById("authToggle").style.display = cfg.showToggle ? "flex" : "none";
+
+    // Role note
+    const noteEl = document.getElementById("loginRoleNote");
+    if (cfg.note) { noteEl.innerHTML = cfg.note; noteEl.style.display = "block"; }
+    else          { noteEl.style.display = "none"; }
+
+    // Update form action & role input
+    document.getElementById("login_form").action = cfg.action;
+    document.getElementById("loginRoleInput").value = role;
+    document.getElementById("loginBtn").innerHTML = '<i class="fas fa-sign-in-alt"></i> ' + cfg.loginBtn;
+
+    // Always show login for manager/staff
+    if (!cfg.showToggle) showLogin();
+
+    // Hide switch link for non-customers
+    document.getElementById("loginSwitchLink").style.display = cfg.showToggle ? "block" : "none";
+  }
+
+  function showLogin() {
+    document.getElementById("loginSection").classList.add("active");
+    document.getElementById("signupSection").classList.remove("active");
+    document.getElementById("btnLogin").classList.add("active");
+    document.getElementById("btnSignup").classList.remove("active");
+  }
+
+  function showSignup() {
+    document.getElementById("signupSection").classList.add("active");
+    document.getElementById("loginSection").classList.remove("active");
+    document.getElementById("btnSignup").classList.add("active");
+    document.getElementById("btnLogin").classList.remove("active");
+  }
+
+  // ── Password toggle ──────────────────────────────────────
+  function togglePw(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon  = document.getElementById(iconId);
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      input.type = "password";
+      icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+
+  // ── Init: handle URL params (portal + errors) ────────────
+  (function() {
+    const params  = new URLSearchParams(window.location.search);
+    const portal  = params.get('portal');
+    const err     = params.get('error');
+
+    // Show role tabs ONLY for staff portal URL or unauthorized redirect
+    if (portal === 'staff' || err === 'unauthorized') {
+      document.getElementById('roleTabs').style.display = 'flex';
+      // Auto-switch to correct tab
+      const required = params.get('required');
+      if (required === 'manager' || required === 'finance') switchRole('manager');
+      else if (required === 'staff') switchRole('staff');
+    }
+
+    // Show error banner
+    if (err) {
+      const messages = {
+        'invalid':        'Incorrect email or password. Please try again.',
+        'empty':          'Please enter your email and password.',
+        'unauthorized':   'Please log in with the correct account to access that page.',
+        'login_required': 'Please log in to continue.',
+        'db':             'Database error: ' + (params.get('msg') || 'check your database setup.')
+      };
+      const msg = messages[err] || 'An error occurred. Please try again.';
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.4);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13.5px;color:#f5a0a0;display:flex;align-items:center;gap:10px;';
+      banner.innerHTML = '<i class="fas fa-exclamation-circle" style="flex-shrink:0;font-size:15px;"></i>' + msg;
+      const loginSection = document.getElementById('loginSection');
+      if (loginSection) loginSection.insertBefore(banner, loginSection.firstChild);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  })();
+
+  // ── Input focus icon highlight ───────────────────────────
+  document.querySelectorAll(".input-wrap input").forEach(input => {
+    input.addEventListener("focus",  () => input.closest(".input-wrap").classList.add("focused"));
+    input.addEventListener("blur",   () => input.closest(".input-wrap").classList.remove("focused"));
+  });
+
+  // ── Login validation ─────────────────────────────────────
+  document.getElementById("login_form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const email    = document.getElementById("login_email");
+    const password = document.getElementById("login_password");
+    const emailErr = document.getElementById("loginEmailError");
+    const passErr  = document.getElementById("loginPasswordError");
+
+    [email, password].forEach(i => { i.classList.remove("error"); });
+    emailErr.innerHTML = ""; passErr.innerHTML = "";
+
+    let ok = true;
+    if (!email.value.trim()) {
+      email.classList.add("error");
+      emailErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Email is required.';
+      ok = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+      email.classList.add("error");
+      emailErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Enter a valid email address.';
+      ok = false;
+    }
+    if (!password.value.trim()) {
+      password.classList.add("error");
+      passErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password is required.';
+      ok = false;
+    } else if (password.value.trim().length < 7) {
+      password.classList.add("error");
+      passErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password must be at least 7 characters.';
+      ok = false;
+    }
+    if (ok) this.submit();
+  });
+
+  // ── Sign Up validation ───────────────────────────────────
+  document.getElementById("signup_form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const name     = document.getElementById("signup_name");
+    const email    = document.getElementById("signup_email");
+    const password = document.getElementById("signup_password");
+    const address  = document.getElementById("signup_address");
+    const nameErr  = document.getElementById("nameError");
+    const emailErr = document.getElementById("emailError");
+    const passErr  = document.getElementById("passwordError");
+    const addrErr  = document.getElementById("addressError");
+
+    [name,email,password,address].forEach(i => i.classList.remove("error"));
+    [nameErr,emailErr,passErr,addrErr].forEach(s => s.innerHTML = "");
+
+    let ok = true;
+
+    // Name: two words, each 3-10 letters
+    const nameTrim = name.value.trim();
+    if (!nameTrim) {
+      name.classList.add("error");
+      nameErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Full name is required.';
+      ok = false;
+    } else if (!/^[a-zA-Z]+(\s+[a-zA-Z]+)+$/.test(nameTrim)) {
+      name.classList.add("error");
+      nameErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Enter first and last name (e.g. Ashenafi Hadush).';
+      ok = false;
+    } else {
+      const parts = nameTrim.split(/\s+/);
+      let nameOk = true;
+      for (const p of parts) {
+        if (p.length < 3) { nameErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Each name part must be at least 3 characters.'; name.classList.add("error"); ok = false; nameOk = false; break; }
+        if (p.length > 10) { nameErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Each name part must not exceed 10 characters.'; name.classList.add("error"); ok = false; nameOk = false; break; }
+      }
+    }
+
+    if (!email.value.trim()) {
+      email.classList.add("error");
+      emailErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Email is required.';
+      ok = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+      email.classList.add("error");
+      emailErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Enter a valid email address.';
+      ok = false;
+    }
+
+    if (!password.value.trim()) {
+      password.classList.add("error");
+      passErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password is required.';
+      ok = false;
+    } else if (password.value.trim().length < 7) {
+      password.classList.add("error");
+      passErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password must be at least 7 characters.';
+      ok = false;
+    }
+
+    if (!address.value.trim()) {
+      address.classList.add("error");
+      addrErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Address is required.';
+      ok = false;
+    } else if (address.value.trim().length < 2) {
+      address.classList.add("error");
+      addrErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Address must be at least 2 characters.';
+      ok = false;
+    }
+
+    const hint   = document.getElementById("signup_hint");
+    const answer = document.getElementById("signup_answer");
+    const hintErr  = document.getElementById("hintError");
+    const answerErr= document.getElementById("answerError");
+    if (!hint.value) {
+      hintErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please choose a security question.';
+      ok = false;
+    } else { hintErr.innerHTML = ""; }
+    if (!answer.value.trim() || answer.value.trim().length < 2) {
+      answerErr.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please provide your security answer.';
+      ok = false;
+    } else { answerErr.innerHTML = ""; }
+
+    if (ok) this.submit();
+  });
+</script>
+
+<!-- ── Forgot Password Modal ── -->
+<div id="forgotModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.65);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.35);width:100%;max-width:420px;overflow:hidden;border-top:4px solid var(--gold);animation:slideUp 0.3s ease;">
+    <div style="padding:28px 32px 0;text-align:center;">
+      <div style="width:56px;height:56px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;"><i class="fas fa-key" style="font-size:22px;color:var(--navy);"></i></div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:6px;">Reset Password</h2>
+      <p id="fpSubtitle" style="font-size:13px;color:#888;margin-bottom:20px;">Enter your email to get your security question.</p>
+    </div>
+
+    <div style="padding:0 32px 28px;">
+
+      <!-- Step 1: Email -->
+      <div id="fpStep1">
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#4a4a6a;margin-bottom:7px;">Email Address</label>
+          <div style="position:relative;">
+            <i class="fas fa-envelope" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#ccc;font-size:14px;pointer-events:none;"></i>
+            <input type="email" id="fpEmail" placeholder="your@email.com"
+              style="width:100%;padding:12px 14px 12px 42px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;font-family:Inter,sans-serif;background:#fafafa;color:#1a1a2e;outline:none;transition:all 0.3s ease;">
+          </div>
+          <span id="fpStep1Error" style="font-size:12px;color:#e74c3c;margin-top:5px;display:none;"></span>
+        </div>
+        <button onclick="fpGetHint()" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--navy);border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:Inter,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;" id="fpStep1Btn">
+          <i class="fas fa-arrow-right"></i> Continue
+        </button>
+      </div>
+
+      <!-- Step 2: Security Answer -->
+      <div id="fpStep2" style="display:none;">
+        <div style="background:#f8f6f0;border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13.5px;color:#4a4a6a;">
+          <i class="fas fa-shield-alt" style="color:var(--gold-dark);margin-right:6px;"></i>
+          <strong>Security Question:</strong><br>
+          <span id="fpHintText" style="color:#1a1a2e;font-weight:600;margin-top:4px;display:block;"></span>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#4a4a6a;margin-bottom:7px;">Your Answer</label>
+          <div style="position:relative;">
+            <i class="fas fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#ccc;font-size:14px;pointer-events:none;"></i>
+            <input type="text" id="fpAnswer" placeholder="Type your answer here"
+              style="width:100%;padding:12px 14px 12px 42px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;font-family:Inter,sans-serif;background:#fafafa;color:#1a1a2e;outline:none;transition:all 0.3s ease;">
+          </div>
+          <span id="fpStep2Error" style="font-size:12px;color:#e74c3c;margin-top:5px;display:none;"></span>
+        </div>
+        <button onclick="fpVerifyAndReset()" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--navy);border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:Inter,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;" id="fpStep2Btn">
+          <i class="fas fa-paper-plane"></i> Verify &amp; Send Password
+        </button>
+        <div style="margin-top:12px;text-align:left;">
+          <a onclick="fpBackToStep1()" style="font-size:13px;color:#888;cursor:pointer;">← Use a different email</a>
+        </div>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div id="fpSuccess" style="display:none;text-align:center;padding:16px 0;">
+        <i class="fas fa-check-circle" style="font-size:48px;color:#27ae60;margin-bottom:14px;display:block;"></i>
+        <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:8px;">Password Sent!</h3>
+        <p id="fpSuccessMsg" style="font-size:13.5px;color:#666;margin-bottom:16px;"></p>
+      </div>
+
+      <div style="text-align:center;margin-top:14px;">
+        <a onclick="hideForgotPassword()" style="font-size:13px;color:#888;cursor:pointer;">← Back to Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showForgotPassword() {
+    document.getElementById('forgotModal').style.display = 'flex';
+    fpReset();
+  }
+  function hideForgotPassword() {
+    document.getElementById('forgotModal').style.display = 'none';
+  }
+  function fpReset() {
+    document.getElementById('fpStep1').style.display = 'block';
+    document.getElementById('fpStep2').style.display = 'none';
+    document.getElementById('fpSuccess').style.display = 'none';
+    document.getElementById('fpStep1Error').style.display = 'none';
+    document.getElementById('fpStep2Error').style.display = 'none';
+    document.getElementById('fpEmail').value = '';
+    document.getElementById('fpAnswer').value = '';
+    document.getElementById('fpSubtitle').textContent = 'Enter your email to get your security question.';
+  }
+  function fpBackToStep1() {
+    document.getElementById('fpStep1').style.display = 'block';
+    document.getElementById('fpStep2').style.display = 'none';
+    document.getElementById('fpStep1Error').style.display = 'none';
+  }
+  document.getElementById('forgotModal').addEventListener('click', function(e) {
+    if (e.target === this) hideForgotPassword();
+  });
+
+  // Step 1: get hint
+  function fpGetHint() {
+    const email = document.getElementById('fpEmail').value.trim();
+    const errEl = document.getElementById('fpStep1Error');
+    errEl.style.display = 'none';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.style.display = 'block'; return;
+    }
+    const btn = document.getElementById('fpStep1Btn');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking…';
+
+    fetch('../../php/auth/forgot_password.php', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'step=get_hint&email=' + encodeURIComponent(email)
+    })
+    .then(r => r.json())
+    .then(data => {
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+      if (data.hint) {
+        document.getElementById('fpHintText').textContent = data.hint;
+        document.getElementById('fpStep1').style.display = 'none';
+        document.getElementById('fpStep2').style.display = 'block';
+        document.getElementById('fpSubtitle').textContent = 'Answer your security question to continue.';
+      } else {
+        errEl.textContent = data.error || 'Something went wrong.';
+        errEl.style.display = 'block';
+      }
+    })
+    .catch(() => {
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+      errEl.textContent = 'Network error. Please try again.';
+      errEl.style.display = 'block';
+    });
+  }
+
+  // Step 2: verify answer and reset
+  function fpVerifyAndReset() {
+    const email  = document.getElementById('fpEmail').value.trim();
+    const answer = document.getElementById('fpAnswer').value.trim();
+    const errEl  = document.getElementById('fpStep2Error');
+    errEl.style.display = 'none';
+    if (!answer) {
+      errEl.textContent = 'Please enter your security answer.';
+      errEl.style.display = 'block'; return;
+    }
+    const btn = document.getElementById('fpStep2Btn');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying…';
+
+    fetch('../../php/auth/forgot_password.php', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'step=verify_and_reset&email=' + encodeURIComponent(email) + '&answer=' + encodeURIComponent(answer)
+    })
+    .then(r => r.json())
+    .then(data => {
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Verify &amp; Send Password';
+      if (data.success) {
+        document.getElementById('fpStep2').style.display = 'none';
+        document.getElementById('fpSuccess').style.display = 'block';
+        document.getElementById('fpSuccessMsg').innerHTML = data.message || 'A temporary password has been sent to your email.';
+        document.getElementById('fpSubtitle').textContent = 'Done!';
+      } else {
+        errEl.textContent = data.error || 'Incorrect answer. Please try again.';
+        errEl.style.display = 'block';
+      }
+    })
+    .catch(() => {
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Verify &amp; Send Password';
+      errEl.textContent = 'Network error. Please try again.';
+      errEl.style.display = 'block';
+    });
+  }
+</script>
+
+</body>
+</html>

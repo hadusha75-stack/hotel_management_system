@@ -1,0 +1,909 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manager Dashboard — SABAWYAN HOTEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables ── */
+    :root {
+      --gold:        #c9a84c;
+      --gold-light:  #e8c97a;
+      --gold-dark:   #a07830;
+      --navy:        #0d1b2a;
+      --navy-mid:    #1a2e45;
+      --navy-light:  #243b55;
+      --white:       #ffffff;
+      --text-mid:    #4a4a6a;
+      --shadow-md:   0 8px 28px rgba(0,0,0,0.22);
+      --shadow-lg:   0 16px 48px rgba(0,0,0,0.30);
+      --shadow-gold: 0 8px 24px rgba(201,168,76,0.28);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   20px;
+      --radius-xl:   28px;
+      --transition:  all 0.3s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0d1b2a 0%, #1a2e45 55%, #243b55 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: url('../../photo/hotelnamebg.jpg') center/cover no-repeat;
+      opacity: 0.06; z-index: 0;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      position: relative; z-index: 10;
+      background: rgba(13,27,42,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.22);
+      padding: 0 36px;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 14px; }
+    .brand-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px rgba(201,168,76,0.35);
+    }
+    .brand-icon i { font-size: 19px; color: var(--navy); }
+    .brand-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; color: #fff; line-height: 1.2; letter-spacing: 0.3px;
+    }
+    .brand-text span { font-size: 11.5px; color: var(--gold-light); letter-spacing: 0.5px; }
+
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    /* ── Notification Bell ── */
+    .notif-wrap { position: relative; }
+
+    .notif-btn {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition);
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+      position: relative;
+    }
+    .notif-btn:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    /* Red badge */
+    .notif-badge {
+      display: none;
+      position: absolute; top: -4px; right: -4px;
+      min-width: 18px; height: 18px;
+      background: #e74c3c;
+      border: 2px solid #0d1b2a;
+      border-radius: 10px;
+      font-size: 10px; font-weight: 700;
+      color: #fff;
+      align-items: center; justify-content: center;
+      padding: 0 4px;
+      animation: badgePop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .notif-badge.visible { display: flex; }
+    @keyframes badgePop {
+      from { transform: scale(0); }
+      to   { transform: scale(1); }
+    }
+
+    /* Bell shake animation when new notif arrives */
+    @keyframes bellShake {
+      0%,100% { transform: rotate(0); }
+      15%      { transform: rotate(18deg); }
+      30%      { transform: rotate(-16deg); }
+      45%      { transform: rotate(12deg); }
+      60%      { transform: rotate(-8deg); }
+      75%      { transform: rotate(4deg); }
+    }
+    .notif-btn.shake i { animation: bellShake 0.6s ease; }
+
+    /* Notification dropdown */
+    .notif-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 12px); right: 0;
+      width: 320px;
+      background: rgba(13,27,42,0.99);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+      overflow: hidden;
+      animation: dropIn 0.2s ease;
+      z-index: 200;
+    }
+    .notif-wrap.open .notif-dropdown { display: block; }
+
+    .notif-head {
+      padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .notif-head-title {
+      font-size: 13px; font-weight: 700; color: #fff;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .notif-head-title i { color: var(--gold); }
+    .notif-mark-btn {
+      font-size: 11px; color: var(--gold-light);
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-weight: 600;
+      transition: var(--transition); padding: 0;
+    }
+    .notif-mark-btn:hover { color: var(--gold); }
+
+    .notif-list { max-height: 300px; overflow-y: auto; }
+    .notif-list::-webkit-scrollbar { width: 4px; }
+    .notif-list::-webkit-scrollbar-track { background: transparent; }
+    .notif-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+    .notif-item {
+      padding: 13px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: var(--transition);
+    }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item:hover { background: rgba(255,255,255,0.04); }
+
+    .notif-item-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .notif-name {
+      font-size: 13px; font-weight: 600; color: #fff;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .notif-name .star-icon { color: #f1c40f; font-size: 11px; }
+    .notif-exp {
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px;
+    }
+    .exp-excellent { background: rgba(46,204,113,0.15); color: #2ecc71; }
+    .exp-good      { background: rgba(52,152,219,0.15); color: #3498db; }
+    .exp-average   { background: rgba(241,196,15,0.15); color: #f1c40f; }
+    .exp-poor      { background: rgba(231,76,60,0.15);  color: #e74c3c; }
+
+    .notif-msg  { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.4; }
+    .notif-time { font-size: 10.5px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+
+    .notif-empty {
+      padding: 32px 18px; text-align: center;
+      color: rgba(255,255,255,0.25); font-size: 13px;
+    }
+    .notif-empty i { font-size: 28px; display: block; margin-bottom: 8px; opacity: 0.3; }
+
+    .notif-footer {
+      padding: 11px 18px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      text-align: center;
+    }
+    .notif-footer a {
+      font-size: 12.5px; font-weight: 600;
+      color: var(--gold-light); text-decoration: none;
+      transition: var(--transition);
+    }
+    .notif-footer a:hover { color: var(--gold); }
+
+    /* ── Manager Menu ── */
+    .manager-menu { position: relative; }
+    .topbar-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 20px;
+      font-size: 12px; font-weight: 600; color: var(--gold-light);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+    }
+    .topbar-badge:hover {
+      background: rgba(201,168,76,0.18);
+      border-color: rgba(201,168,76,0.5);
+    }
+    .topbar-badge i.chevron {
+      font-size: 10px;
+      transition: transform 0.25s ease;
+      opacity: 0.7;
+    }
+    .manager-menu.open .topbar-badge i.chevron { transform: rotate(180deg); }
+
+    .manager-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 10px); right: 0;
+      min-width: 180px;
+      background: rgba(13,27,42,0.98);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+      overflow: hidden;
+      animation: dropIn 0.2s ease;
+      z-index: 100;
+    }
+    .manager-menu.open .manager-dropdown { display: block; }
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-header {
+      padding: 12px 16px 8px;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: rgba(255,255,255,0.25);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dropdown-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 16px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .dropdown-item i {
+      width: 18px; text-align: center;
+      font-size: 13px; opacity: 0.6;
+    }
+    .dropdown-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+    }
+    .dropdown-item:hover i { opacity: 1; }
+    .dropdown-item.danger { color: rgba(231,76,60,0.8); }
+    .dropdown-item.danger i { color: #e74c3c; opacity: 0.8; }
+    .dropdown-item.danger:hover {
+      background: rgba(231,76,60,0.1);
+      color: #e74c3c;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 4px 0;
+    }
+
+    /* ── Page Wrapper ── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 44px 28px 70px;
+    }
+
+    /* ── Welcome Banner ── */
+    .welcome-banner {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-left: 4px solid var(--gold);
+      border-radius: var(--radius-md);
+      padding: 24px 30px;
+      margin-bottom: 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .welcome-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; color: #fff; margin-bottom: 4px;
+    }
+    .welcome-text p { font-size: 13.5px; color: rgba(255,255,255,0.45); }
+    .welcome-date {
+      text-align: right;
+    }
+    .welcome-date .date-val {
+      font-size: 15px; font-weight: 600; color: var(--gold-light);
+    }
+    .welcome-date .date-label {
+      font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px;
+    }
+
+    /* ── Section Title ── */
+    .section-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 16px; margin-top: 36px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+    .section-title::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ── Action Grid ── */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    /* ── Action Card ── */
+    .action-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      padding: 26px 20px 22px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none; outline: none;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      text-align: center;
+    }
+    .action-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0);
+      transition: var(--transition);
+    }
+    .action-card:hover { transform: translateY(-5px); box-shadow: 0 20px 44px rgba(0,0,0,0.38); }
+    .action-card:hover::before { background: rgba(255,255,255,0.06); }
+    .action-card:active { transform: translateY(-2px); }
+
+    .card-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: #fff;
+      flex-shrink: 0;
+    }
+    .card-label {
+      font-size: 13.5px; font-weight: 600; color: #fff;
+      line-height: 1.35; letter-spacing: 0.1px;
+    }
+    .card-desc {
+      font-size: 11px; color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+
+    /* Card color themes */
+    .c-red    { background: linear-gradient(145deg, #922b21, #e74c3c); }
+    .c-teal   { background: linear-gradient(145deg, #0e6655, #1abc9c); }
+    .c-blue   { background: linear-gradient(145deg, #1a5276, #2980b9); }
+    .c-orange { background: linear-gradient(145deg, #a04000, #e67e22); }
+    .c-purple { background: linear-gradient(145deg, #4a235a, #8e44ad); }
+    .c-crimson{ background: linear-gradient(145deg, #7b241c, #c0392b); }
+    .c-indigo { background: linear-gradient(145deg, #1b2a6b, #3f51b5); }
+    .c-green  { background: linear-gradient(145deg, #1e8449, #27ae60); }
+    .c-amber  { background: linear-gradient(145deg, #7d6608, #f1c40f); }
+    .c-slate  { background: linear-gradient(145deg, #2c3e50, #566573); }
+
+    /* ── Logout card special style — removed, now in topbar menu ── */
+
+    /* ── Modal Overlay ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(5px);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      width: 100%; max-width: 460px;
+      position: relative;
+      border-top: 4px solid var(--gold);
+      animation: popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.88) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 28px 32px 0;
+      text-align: center;
+    }
+    .modal-header .modal-icon {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+      box-shadow: var(--shadow-gold);
+    }
+    .modal-header .modal-icon i { font-size: 24px; color: var(--navy); }
+    .modal-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; color: var(--navy); margin-bottom: 4px;
+    }
+    .modal-header p { font-size: 13px; color: #888; }
+    .modal-divider {
+      width: 44px; height: 3px;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+      border-radius: 2px; margin: 12px auto 0;
+    }
+
+    .modal-body { padding: 24px 32px; }
+
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 32px; height: 32px;
+      background: #f5f5f5; border: none;
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #888;
+      transition: var(--transition);
+    }
+    .modal-close:hover { background: #fee; color: #e74c3c; transform: rotate(90deg); }
+
+    /* ── Modal Form ── */
+    .mform-group { margin-bottom: 18px; }
+    .mform-group label {
+      display: block;
+      font-size: 11.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      color: var(--text-mid); margin-bottom: 7px;
+    }
+    .mform-group label i { margin-right: 5px; color: var(--gold-dark); }
+    .mform-group input,
+    .mform-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: var(--radius-sm);
+      font-size: 14.5px; font-family: 'Inter', sans-serif;
+      background: #fafafa; color: #1a1a2e;
+      transition: var(--transition);
+    }
+    .mform-group input:focus,
+    .mform-group select:focus {
+      outline: none; border-color: var(--gold);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+    }
+    .mform-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .error-msg {
+      display: block; font-size: 11.5px;
+      color: #e74c3c; margin-top: 5px;
+    }
+
+    .modal-footer { padding: 0 32px 28px; }
+    .btn-add-room {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+      color: var(--navy); border: none;
+      border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: var(--transition);
+      box-shadow: var(--shadow-gold);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-add-room:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.42); }
+    .btn-add-room:active { transform: translateY(0); }
+
+    /* ── Footer ── */
+    .page-footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .topbar { padding: 0 16px; }
+      .page { padding: 28px 14px 50px; }
+      .welcome-banner { padding: 18px 20px; }
+      .welcome-text h2 { font-size: 20px; }
+      .action-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .modal-body, .modal-footer { padding-left: 20px; padding-right: 20px; }
+      .modal-header { padding: 22px 20px 0; }
+      .mform-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Top Bar ── -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-icon"><i class="fas fa-hotel"></i></div>
+      <div class="brand-text">
+        <h1>SABAWYAN HOTEL</h1>
+        <span>Management System</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <!-- Notification Bell -->
+      <div class="notif-wrap" id="notifWrap">
+        <button class="notif-btn" id="notifBtn" onclick="toggleNotif()" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="notif-badge" id="notifBadge"></span>
+        </button>
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-head">
+            <span class="notif-head-title"><i class="fas fa-star"></i> New Feedbacks</span>
+            <button class="notif-mark-btn" onclick="markAllSeen()">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notifList">
+            <div class="notif-empty"><i class="fas fa-check-circle"></i>All caught up!</div>
+          </div>
+          <div class="notif-footer">
+            <a href="../../php/manager/view_feedback.php" onclick="markAllSeen()">View all feedbacks →</a>
+          </div>
+        </div>
+      </div>
+      <div class="manager-menu" id="managerMenu">
+        <div class="topbar-badge" onclick="toggleMenu()">
+          <i class="fas fa-user-tie"></i>
+          Manager
+          <i class="fas fa-chevron-down chevron"></i>
+        </div>
+        <div class="manager-dropdown">
+          <div class="dropdown-header">Signed in as Manager</div>
+          <a class="dropdown-item" href="#">
+            <i class="fas fa-user-circle"></i> My Profile
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item danger" href="../../php/auth/logout.php"><i class="fas fa-power-off"></i> Log Out
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Page ── -->
+  <main class="page">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <h2>Welcome back, Manager</h2>
+        <p>Here's your control panel — manage rooms, guests, and operations below.</p>
+      </div>
+      <div class="welcome-date">
+        <div class="date-val" id="liveDate">—</div>
+        <div class="date-label">Today's Date</div>
+      </div>
+    </div>
+
+    <!-- Section: Room Management -->
+    <div class="section-title"><i class="fas fa-door-open"></i> Room Management</div>
+    <div class="action-grid" style="grid-template-columns: repeat(2, minmax(190px, 220px));">
+
+      <button class="action-card c-red" onclick="openModal()">
+        <div class="card-icon"><i class="fas fa-plus-circle"></i></div>
+        <div>
+          <div class="card-label">Manage Room</div>
+          <div class="card-desc">Add new rooms to inventory</div>
+        </div>
+      </button>
+
+      <a class="action-card c-teal" href="../../php/manager/housekeeping.php">
+        <div class="card-icon"><i class="fas fa-list-check"></i></div>
+        <div>
+          <div class="card-label">Check Rooms</div>
+          <div class="card-desc">View room availability</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Section: Guest Operations -->
+    <div class="section-title"><i class="fas fa-users"></i> Guest Operations</div>
+    <div class="action-grid">
+
+      <a class="action-card c-blue" href="../../php/manager/checkin.php">
+        <div class="card-icon"><i class="fas fa-sign-in-alt"></i></div>
+        <div>
+          <div class="card-label">Check In</div>
+          <div class="card-desc">Register arriving guests</div>
+        </div>
+      </a>
+
+      <a class="action-card c-orange" href="../../php/manager/checkout.php">
+        <div class="card-icon"><i class="fas fa-sign-out-alt"></i></div>
+        <div>
+          <div class="card-label">Check Out</div>
+          <div class="card-desc">Process guest departures</div>
+        </div>
+      </a>
+
+      <a class="action-card c-purple" href="../../php/manager/guest_details.php">
+        <div class="card-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <div class="card-label">Customer Details</div>
+          <div class="card-desc">View all guest records</div>
+        </div>
+      </a>
+
+      <a class="action-card c-indigo" href="../../php/manager/update_guest.php">
+        <div class="card-icon"><i class="fas fa-user-edit"></i></div>
+        <div>
+          <div class="card-label">Update Customer</div>
+          <div class="card-desc">Edit guest information</div>
+        </div>
+      </a>
+
+      <a class="action-card" href="../../php/manager/payment_approval.php" style="background:linear-gradient(145deg,#1e5128,#27ae60);">
+        <div class="card-icon"><i class="fas fa-money-check-alt"></i></div>
+        <div>
+          <div class="card-label">Payment Approval</div>
+          <div class="card-desc">Approve guest payments</div>
+        </div>
+      </a>
+
+      <a class="action-card c-crimson" href="../../php/manager/billing_archive.php">
+        <div class="card-icon"><i class="fas fa-trash-restore"></i></div>
+        <div>
+          <div class="card-label">Deleted Records</div>
+          <div class="card-desc">View removed guest entries</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Section: Communications -->
+    <div class="section-title"><i class="fas fa-comments"></i> Communications</div>
+    <div class="action-grid" style="grid-template-columns: repeat(2, minmax(190px, 220px));">
+
+      <a class="action-card c-green" href="../../php/manager/view_contacts.php">
+        <div class="card-icon"><i class="fas fa-envelope-open-text"></i></div>
+        <div>
+          <div class="card-label">View Contacts</div>
+          <div class="card-desc">Guest contact messages</div>
+        </div>
+      </a>
+
+      <a class="action-card c-amber" href="../../php/manager/view_feedback.php">
+        <div class="card-icon"><i class="fas fa-star"></i></div>
+        <div>
+          <div class="card-label">View Feedbacks</div>
+          <div class="card-desc">Guest reviews & ratings</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Section: Account -->
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="page-footer">
+    &copy; 2025 Sabawyan Hotel Management System. All rights reserved.
+  </footer>
+
+  <!-- ── Add Room Modal ── -->
+  <div class="modal-overlay" id="addRoomOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-icon"><i class="fas fa-door-open"></i></div>
+        <h2 id="modalTitle">Add New Room</h2>
+        <p>Fill in the details to register a new room</p>
+        <div class="modal-divider"></div>
+      </div>
+
+      <div class="modal-body">
+        <form action="../../php/manager/add_room.php" method="POST" id="addRoomForm">
+
+          <div class="mform-row">
+            <div class="mform-group">
+              <label><i class="fas fa-snowflake"></i>Room Type</label>
+              <select name="roomtype">
+                <option value="AC">AC</option>
+                <option value="NonAC">Non AC</option>
+              </select>
+            </div>
+            <div class="mform-group">
+              <label><i class="fas fa-bed"></i>Bed Type</label>
+              <select name="bedtype">
+                <option value="Single">Single</option>
+                <option value="Double">Double</option>
+                <option value="Triple">Triple</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mform-row">
+            <div class="mform-group">
+              <label><i class="fas fa-hashtag"></i>Room Number</label>
+              <input type="text" name="roomnumber" id="roomnumber" placeholder="e.g. 101">
+              <span class="error-msg" id="roomnumberError"></span>
+            </div>
+            <div class="mform-group">
+              <label><i class="fas fa-tag"></i>Price / Night (ETB)</label>
+              <input type="number" name="Price" id="price" placeholder="e.g. 1500">
+              <span class="error-msg" id="priceError"></span>
+            </div>
+          </div>
+
+      </div><!-- /modal-body -->
+
+      <div class="modal-footer">
+          <button type="submit" class="btn-add-room">
+            <i class="fas fa-plus-circle"></i> Add Room
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ── Manager Menu ──
+    const managerMenu = document.getElementById('managerMenu');
+    function toggleMenu() { managerMenu.classList.toggle('open'); }
+    document.addEventListener('click', e => {
+      if (!managerMenu.contains(e.target)) managerMenu.classList.remove('open');
+    });
+
+    // ── Live Date ──
+    const dateEl = document.getElementById('liveDate');
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    // ── Modal ──
+    const overlay = document.getElementById('addRoomOverlay');
+    function openModal()  { overlay.classList.add('active'); }
+    function closeModal() { overlay.classList.remove('active'); }
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeNotif(); } });
+
+    // ── Form Validation ──
+    document.getElementById('addRoomForm').addEventListener('submit', function(e) {
+      let valid = true;
+      const roomNumber      = document.getElementById('roomnumber');
+      const price           = document.getElementById('price');
+      const roomNumberError = document.getElementById('roomnumberError');
+      const priceError      = document.getElementById('priceError');
+      roomNumberError.textContent = '';
+      priceError.textContent      = '';
+      if (!roomNumber.value.trim()) {
+        roomNumberError.textContent = 'Room number is required.'; valid = false;
+      } else if (isNaN(roomNumber.value)) {
+        roomNumberError.textContent = 'Room number must be numeric.'; valid = false;
+      }
+      if (!price.value.trim()) {
+        priceError.textContent = 'Price is required.'; valid = false;
+      } else if (Number(price.value) <= 0) {
+        priceError.textContent = 'Price must be greater than 0.'; valid = false;
+      }
+      if (!valid) e.preventDefault();
+    });
+
+    // ── Notifications ──
+    const notifWrap     = document.getElementById('notifWrap');
+    const notifBtn      = document.getElementById('notifBtn');
+    const notifBadge    = document.getElementById('notifBadge');
+    const notifList     = document.getElementById('notifList');
+    let   lastCount     = 0;
+
+    function expClass(exp) {
+      const e = (exp || '').toLowerCase();
+      if (e.includes('excel'))   return 'exp-excellent';
+      if (e.includes('good'))    return 'exp-good';
+      if (e.includes('average')) return 'exp-average';
+      return 'exp-poor';
+    }
+
+    function timeAgo(dateStr) {
+      const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+      if (diff < 60)   return 'just now';
+      if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+      if (diff < 86400)return Math.floor(diff/3600) + 'h ago';
+      return Math.floor(diff/86400) + 'd ago';
+    }
+
+    const API_BASE = '../../php';
+
+    function fetchNotifications() {
+      fetch(API_BASE + '/api/notifications.php', { credentials: 'include' })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) return; // silently ignore auth errors
+          const count = data.count || 0;
+
+          // Update badge
+          if (count > 0) {
+            notifBadge.textContent = count > 99 ? '99+' : count;
+            notifBadge.classList.add('visible');
+          } else {
+            notifBadge.classList.remove('visible');
+          }
+
+          // Shake bell if new notifications arrived
+          if (count > lastCount && lastCount !== null) {
+            notifBtn.classList.remove('shake');
+            void notifBtn.offsetWidth; // reflow to restart animation
+            notifBtn.classList.add('shake');
+            setTimeout(() => notifBtn.classList.remove('shake'), 700);
+          }
+          lastCount = count;
+
+          // Build list
+          if (data.items && data.items.length > 0) {
+            notifList.innerHTML = data.items.map(item => `
+              <div class="notif-item">
+                <div class="notif-item-top">
+                  <span class="notif-name">
+                    <i class="fas fa-star star-icon"></i>${item.name}
+                  </span>
+                  <span class="notif-exp ${expClass(item.experience)}">${item.experience}</span>
+                </div>
+                <div class="notif-msg">${item.message}</div>
+                <div class="notif-time"><i class="fas fa-clock" style="margin-right:4px;opacity:0.5;"></i>${timeAgo(item.time)}</div>
+              </div>
+            `).join('');
+          } else {
+            notifList.innerHTML = '<div class="notif-empty"><i class="fas fa-check-circle"></i>All caught up!</div>';
+          }
+        })
+        .catch(() => {}); // silently fail if server is down
+    }
+
+    function toggleNotif() {
+      const isOpen = notifWrap.classList.toggle('open');
+      if (isOpen) managerMenu.classList.remove('open');
+    }
+
+    function closeNotif() { notifWrap.classList.remove('open'); }
+
+    function markAllSeen() {
+      fetch(API_BASE + '/api/mark_feedback_seen.php', { credentials: 'include' })
+        .then(() => {
+          lastCount = 0;
+          notifBadge.classList.remove('visible');
+          notifList.innerHTML = '<div class="notif-empty"><i class="fas fa-check-circle"></i>All caught up!</div>';
+          closeNotif();
+        });
+    }
+
+    // Close notif dropdown when clicking outside
+    document.addEventListener('click', e => {
+      if (!notifWrap.contains(e.target)) closeNotif();
+    });
+
+    // Initial fetch + poll every 30 seconds
+    fetchNotifications();
+    setInterval(fetchNotifications, 30000);
+  </script>
+
+</body>
+</html>

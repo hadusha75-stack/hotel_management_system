@@ -1,0 +1,8 @@
+﻿/* ============================================================
+   SABAWYAN HOTEL — main.css
+   Redirects to the new theme system.
+   This file is kept for backward compatibility.
+   ============================================================ */
+
+@import url('../theme.css');
+@import url('hotel_management.css');

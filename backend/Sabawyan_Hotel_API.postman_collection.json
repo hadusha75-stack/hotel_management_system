@@ -1,0 +1,338 @@
+{
+  "info": {
+    "name": "Sabawyan Hotel API",
+    "description": "Complete API collection for Sabawyan Hotel Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login - Manager",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"manager@sabawyan.com\",\n  \"password\": \"manager123\"\n}" }
+          }
+        },
+        {
+          "name": "Login - Finance",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"finance@sabawyan.com\",\n  \"password\": \"finance123\"\n}" }
+          }
+        },
+        {
+          "name": "Login - Staff",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"staff@sabawyan.com\",\n  \"password\": \"staff123\"\n}" }
+          }
+        },
+        {
+          "name": "Login - Guest",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"guest@test.com\",\n  \"password\": \"password123\"\n}" }
+          }
+        },
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/signup",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"Ashenafi Hadush\",\n  \"email\": \"ashenafi@test.com\",\n  \"password\": \"password123\",\n  \"address\": \"Mekelle, Tigray\",\n  \"security_hint\": \"What is your mother's maiden name?\",\n  \"security_answer\": \"Tigist\"\n}" }
+          }
+        },
+        {
+          "name": "Forgot Password - Get Hint",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/forgot-password/hint",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"ashenafi@test.com\"\n}" }
+          }
+        },
+        {
+          "name": "Forgot Password - Verify & Reset",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/forgot-password/verify",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"ashenafi@test.com\",\n  \"answer\": \"Tigist\"\n}" }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/change-password",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"password\": \"newpassword123\"\n}" }
+          }
+        },
+        {
+          "name": "Who Am I",
+          "request": { "method": "GET", "url": "{{base_url}}/auth/me" }
+        },
+        {
+          "name": "Logout",
+          "request": { "method": "GET", "url": "{{base_url}}/auth/logout" }
+        }
+      ]
+    },
+    {
+      "name": "🛏️ Rooms",
+      "item": [
+        {
+          "name": "Get All Rooms",
+          "request": { "method": "GET", "url": "{{base_url}}/rooms" }
+        },
+        {
+          "name": "Get Rooms by Status",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/rooms?status=not booked", "query": [{ "key": "status", "value": "not booked" }] } }
+        },
+        {
+          "name": "Get Available Rooms (Filter)",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/rooms/available?bed_type=Single&room_type=AC", "query": [{ "key": "bed_type", "value": "Single" }, { "key": "room_type", "value": "AC" }] } }
+        },
+        {
+          "name": "Get Room Price",
+          "request": { "method": "GET", "url": "{{base_url}}/rooms/101/price" }
+        },
+        {
+          "name": "Add Room",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/rooms",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"roomnumber\": \"201\",\n  \"roomtype\": \"AC\",\n  \"bedtype\": \"Double\",\n  \"price\": 1200\n}" }
+          }
+        },
+        {
+          "name": "Update Room Status",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/rooms/101",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"cleanDerty\": \"Dirty\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚪 Check In",
+      "item": [
+        {
+          "name": "Check In Guest",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/checkin",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Ashenafi Hadush\",\n  \"email\": \"ashenafi@test.com\",\n  \"mobilenumber\": \"0912345678\",\n  \"nationality\": \"Ethiopian\",\n  \"gender\": \"Male\",\n  \"address\": \"Mekelle, Tigray\",\n  \"idproof\": \"ETH123456\",\n  \"bedtype\": \"Single\",\n  \"roomtype\": \"AC\",\n  \"roomnumber\": \"101\",\n  \"checkin\": \"2026-06-05\",\n  \"price\": 800\n}" }
+          }
+        },
+        {
+          "name": "Get Active Guests",
+          "request": { "method": "GET", "url": "{{base_url}}/checkin/active" }
+        }
+      ]
+    },
+    {
+      "name": "🚶 Check Out",
+      "item": [
+        {
+          "name": "Check Out Guest",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/checkout",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"roomnumber\": \"101\",\n  \"checkout_date\": \"2026-06-10\"\n}" }
+          }
+        },
+        {
+          "name": "Get My Booking (Guest)",
+          "request": { "method": "GET", "url": "{{base_url}}/checkout/guest" }
+        }
+      ]
+    },
+    {
+      "name": "👥 Guests",
+      "item": [
+        {
+          "name": "Get All Active Guests",
+          "request": { "method": "GET", "url": "{{base_url}}/guests" }
+        },
+        {
+          "name": "Get My Booking",
+          "request": { "method": "GET", "url": "{{base_url}}/guests/me" }
+        },
+        {
+          "name": "Get Checkout Archive",
+          "request": { "method": "GET", "url": "{{base_url}}/guests/archive" }
+        },
+        {
+          "name": "Update Guest",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/guests/101",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Ashenafi Hadush\",\n  \"address\": \"Addis Ababa\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Finance",
+      "item": [
+        {
+          "name": "Get KPI Dashboard",
+          "request": { "method": "GET", "url": "{{base_url}}/finance/kpi" }
+        },
+        {
+          "name": "Get Full Reports (All Time)",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/finance/reports?from=2000-01-01&to=2099-12-31", "query": [{ "key": "from", "value": "2000-01-01" }, { "key": "to", "value": "2099-12-31" }] } }
+        },
+        {
+          "name": "Get Reports (This Month)",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/finance/reports?from=2026-06-01&to=2026-06-30", "query": [{ "key": "from", "value": "2026-06-01" }, { "key": "to", "value": "2026-06-30" }] } }
+        },
+        {
+          "name": "Get Payment Approval List",
+          "request": { "method": "GET", "url": "{{base_url}}/finance/payment-approval" }
+        },
+        {
+          "name": "Get Unpaid List",
+          "request": { "method": "GET", "url": { "raw": "{{base_url}}/finance/payment-approval?filter=unpaid", "query": [{ "key": "filter", "value": "unpaid" }] } }
+        },
+        {
+          "name": "Approve Payment",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/finance/payment-approval/101",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"action\": \"approve\"\n}" }
+          }
+        },
+        {
+          "name": "Revoke Payment",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/finance/payment-approval/101",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"action\": \"revoke\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧹 Housekeeping",
+      "item": [
+        {
+          "name": "Get Pending Tasks",
+          "request": { "method": "GET", "url": "{{base_url}}/housekeeping" }
+        },
+        {
+          "name": "Get All Rooms",
+          "request": { "method": "GET", "url": "{{base_url}}/housekeeping/rooms" }
+        },
+        {
+          "name": "Update Room Cleanliness",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/housekeeping/rooms/101",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"cleanDerty\": \"Clean\"\n}" }
+          }
+        },
+        {
+          "name": "Update Task - In Progress",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/housekeeping/tasks/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"InProgress\"\n}" }
+          }
+        },
+        {
+          "name": "Update Task - Done",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/housekeeping/tasks/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"Done\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "item": [
+        {
+          "name": "Get Unread Feedback Count",
+          "request": { "method": "GET", "url": "{{base_url}}/notifications" }
+        },
+        {
+          "name": "Mark All as Read",
+          "request": { "method": "POST", "url": "{{base_url}}/notifications/mark-seen" }
+        }
+      ]
+    },
+    {
+      "name": "🌐 Public",
+      "item": [
+        {
+          "name": "Submit Feedback",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/public/feedback",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test Guest\",\n  \"email\": \"test@test.com\",\n  \"experience\": \"Excellent\",\n  \"message\": \"Amazing stay, very comfortable rooms!\"\n}" }
+          }
+        },
+        {
+          "name": "Submit Contact Message",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/public/contact",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@test.com\",\n  \"message\": \"I would like to book a room for next week.\"\n}" }
+          }
+        },
+        {
+          "name": "View All Rooms (Public)",
+          "request": { "method": "GET", "url": "{{base_url}}/public/rooms" }
+        },
+        {
+          "name": "View All Feedback",
+          "request": { "method": "GET", "url": "{{base_url}}/public/feedback" }
+        },
+        {
+          "name": "View Contact Messages",
+          "request": { "method": "GET", "url": "{{base_url}}/public/contacts" }
+        }
+      ]
+    },
+    {
+      "name": "✅ Health Check",
+      "item": [
+        {
+          "name": "API Health",
+          "request": { "method": "GET", "url": "http://localhost:3000/api/health" }
+        }
+      ]
+    }
+  ]
+}

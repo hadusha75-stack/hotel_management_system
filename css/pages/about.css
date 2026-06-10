@@ -1,0 +1,138 @@
+﻿/* ============================================================
+   SABAWYAN HOTEL — About Us Page
+   ============================================================ */
+
+@import url('../theme.css');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-page);
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 60px 20px;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url('../../photo/outsidebg.jpg') center/cover no-repeat;
+  opacity: 0.07;
+  z-index: 0;
+}
+
+.about-container {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.97);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 52px 52px 44px;
+  border-top: 4px solid var(--gold);
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.about-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.about-header .hotel-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: var(--shadow-gold);
+}
+.about-header .hotel-icon i { font-size: 28px; color: var(--gold-light); }
+
+.about-container h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.gold-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  border-radius: 2px;
+  margin: 12px auto 20px;
+}
+.about-container > p {
+  text-align: center;
+  color: var(--text-mid);
+  line-height: 1.8;
+  font-size: 16px;
+  max-width: 620px;
+  margin: 0 auto 40px;
+}
+
+/* ── Feature Boxes ── */
+.about-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+.about-box {
+  background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--radius-md);
+  padding: 28px 20px;
+  text-align: center;
+  transition: var(--transition);
+}
+.about-box:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(201,168,76,0.5);
+  background: linear-gradient(135deg, #fff9ee, #fff5e0);
+}
+.about-box .icon-wrap {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+.about-box .icon-wrap i { font-size: 22px; color: var(--gold-light); }
+.about-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.about-box p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+/* ── Exit ── */
+.exit {
+  width: 36px;
+  height: 36px;
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  cursor: pointer;
+  transition: var(--transition);
+  filter: drop-shadow(0 0 6px rgba(201,168,76,0.5));
+  z-index: 999;
+}
+.exit:hover  { transform: rotate(90deg) scale(1.15); filter: drop-shadow(0 0 14px rgba(201,168,76,0.9)); }
+.exit:active { transform: scale(0.88); }
+
+@media (max-width: 768px) {
+  .about-container { padding: 36px 24px 28px; }
+  .about-boxes { grid-template-columns: 1fr; }
+}

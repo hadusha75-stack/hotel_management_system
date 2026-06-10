@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — SABAWYAN HOTEL</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-dark:#a07830;--navy:#0d1b2a;--navy-mid:#1a2e45;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0d1b2a 0%,#1a2e45 50%,#243b55 100%);min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;background:url('../../photo/treeandhotelbg.jpg') center/cover no-repeat;opacity:0.06;z-index:0;}
+
+    .topbar{position:relative;z-index:10;background:rgba(13,27,42,0.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+    .brand{display:flex;align-items:center;gap:12px;}
+    .brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;}
+    .brand-icon i{font-size:17px;color:var(--navy);}
+    .brand h1{font-family:'Playfair Display',serif;font-size:18px;color:#fff;}
+    .brand span{font-size:11px;color:var(--gold-light);}
+    .back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;color:var(--gold-light);font-size:13px;font-weight:600;text-decoration:none;transition:all 0.3s ease;}
+    .back-btn:hover{background:rgba(201,168,76,0.2);color:var(--gold);transform:translateX(-2px);}
+
+    .page{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 24px 80px;}
+
+    .page-header{text-align:center;margin-bottom:48px;}
+    .page-header h2{font-family:'Playfair Display',serif;font-size:34px;color:#fff;margin-bottom:10px;}
+    .gold-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:2px;margin:12px auto 16px;}
+    .page-header p{font-size:15px;color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto;}
+
+    .grid{display:grid;grid-template-columns:1fr 1.5fr;gap:28px;}
+
+    /* Info panel */
+    .info-panel{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.15);border-radius:16px;padding:32px 28px;}
+    .info-panel h3{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:20px;}
+    .info-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;}
+    .info-icon{width:42px;height:42px;background:rgba(201,168,76,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .info-icon i{font-size:16px;color:var(--gold);}
+    .info-label{font-size:11px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;}
+    .info-value{font-size:14px;color:rgba(255,255,255,0.8);font-weight:500;}
+
+    /* Form panel */
+    .form-panel{background:rgba(255,255,255,0.97);border-radius:16px;padding:36px 32px;box-shadow:0 16px 48px rgba(0,0,0,0.28);border-top:4px solid var(--gold);}
+    .form-panel h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:6px;}
+    .form-panel p{font-size:13px;color:#888;margin-bottom:24px;}
+    .form-group{margin-bottom:18px;}
+    .form-group label{display:block;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#4a4a6a;margin-bottom:7px;}
+    .form-group input,.form-group textarea{width:100%;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:6px;font-size:14px;font-family:'Inter',sans-serif;background:#fafafa;color:#1a1a2e;transition:all 0.3s ease;}
+    .form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+    .form-group textarea{resize:vertical;min-height:120px;}
+    .btn-send{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));color:var(--navy);border:none;border-radius:6px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-send:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,168,76,0.42);}
+
+    /* Success message */
+    .success-msg{display:none;text-align:center;padding:32px;}
+    .success-msg i{font-size:48px;color:#27ae60;margin-bottom:14px;display:block;}
+    .success-msg h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:8px;}
+    .success-msg p{font-size:14px;color:#666;}
+
+    @media(max-width:700px){.topbar{padding:0 16px;}.grid{grid-template-columns:1fr;}.form-panel{padding:24px 20px;}}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon"><i class="fas fa-hotel"></i></div>
+    <div>
+      <h1>SABAWYAN HOTEL</h1>
+      <span>Kuiha, Mekelle, Ethiopia</span>
+    </div>
+  </div>
+  <a href="../../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</header>
+
+<main class="page">
+
+  <div class="page-header">
+    <h2>Contact Us</h2>
+    <div class="gold-divider"></div>
+    <p>We'd love to hear from you. Reach out and our team will respond as soon as possible.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+      <h3>Get In Touch</h3>
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-phone"></i></div>
+        <div><div class="info-label">Phone</div><div class="info-value">+251 952 811 879</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+        <div><div class="info-label">Email</div><div class="info-value">teklaywerede11@gmail.com</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div><div class="info-label">Address</div><div class="info-value">Sabawyan Hotel, Kuiha<br>Mekelle, Tigray, Ethiopia</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-clock"></i></div>
+        <div><div class="info-label">Reception Hours</div><div class="info-value">24 Hours / 7 Days</div></div>
+      </div>
+    </div>
+
+    <!-- Form Panel -->
+    <div class="form-panel">
+      <div id="formWrap">
+        <h3>Send a Message</h3>
+        <p>Fill out the form below and we'll get back to you shortly.</p>
+        <form action="../../php/public/save_contact.php" method="post" id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label><i class="fas fa-user" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Your Name</label>
+            <input type="text" name="name" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-envelope" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Email Address</label>
+            <input type="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-comment-dots" style="margin-right:5px;color:var(--gold-dark);font-size:10px;"></i>Message</label>
+            <textarea name="message" placeholder="How can we help you?" required></textarea>
+          </div>
+          <button type="submit" class="btn-send"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </form>
+      </div>
+        <div class="success-msg" id="successMsg" style="display:none;">
+          <i class="fas fa-check-circle"></i>
+          <h3>Message Sent!</h3>
+          <p>Thank you for reaching out. We'll get back to you shortly.</p>
+        </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('sent') === '1') {
+        document.getElementById('formWrap').style.display  = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+    if (params.get('error') === 'empty') {
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.4);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13.5px;color:#e74c3c;display:flex;align-items:center;gap:10px;';
+        banner.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill in all fields before submitting.';
+        const form = document.getElementById('formWrap');
+        if (form) form.insertBefore(banner, form.firstChild);
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+})();
+</script>
+</body>
+</html>
